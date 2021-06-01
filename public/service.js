@@ -1,9 +1,9 @@
 const {execFile} = require('child_process');
 
 /**
- * PycatService
+ * EEG2BIDS Wizard Service
  */
-module.exports = class PycatService {
+module.exports = class Service {
   /**
    * constructor
    */

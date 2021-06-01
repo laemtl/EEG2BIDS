@@ -10,18 +10,18 @@ const {BrowserWindow} = electron;
 const {ipcMain} = require('electron');
 const nativeImage = electron.nativeImage;
 
-const PycatService = process.env.DEV ?
-  require('../public/pycatService') :
-  require(path.join(__dirname, '../build/pycatService'));
+const service = process.env.DEV ?
+  require('../public/service') :
+  require(path.join(__dirname, '../build/service'));
 
 // Launch python service.
-const pycatService = new PycatService();
+const service = new Service();
 if (!process.env.DEV) {
-  pycatService.startup().then((error) => {
+  service.startup().then((error) => {
     if (error) {
-      console.info('[SERVICE] pycat-service failed');
+      console.info('[SERVICE] eeg2bids-service failed');
     } else {
-      console.info('[SERVICE] pycat-service success');
+      console.info('[SERVICE] eeg2bids-service success');
     }
   });
 }
@@ -81,7 +81,7 @@ const createMainWindow = () => {
   });
 
   mainWindow.on('closed', function() {
-    pycatService.shutdown();
+    service.shutdown();
     mainWindow = null;
   });
 };
@@ -133,7 +133,7 @@ app.on('ready', async () => {
 });
 
 app.on('window-all-closed', () => {
-  pycatService.shutdown();
+  service.shutdown();
   if (process.platform !== 'darwin') {
     app.quit();
   }
